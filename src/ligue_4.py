@@ -32,22 +32,63 @@ class Tabuleiro:
 class Ligue4:
     def __init__(self):
         self.tabuleiro = Tabuleiro()
+        self.jogador_atual = 1
 
-    def iniciar_jogo(self):
-        jogador = 0
+    def jogo(self):
+        contador = 0
+        
         while True:
             self.tabuleiro.mostrar_tabuleiro()
-            self.tabuleiro.adicionar_peca(jogador%2+1)
-            jogador += 1
-            if jogador == 6 * 7 - 1:
-                print("Empate")
+            self.tabuleiro.adicionar_peca(self.jogador_atual)
+            if self.verificar_vitoria():
+                print(f'jogador {self.jogador_atual} venceu!')
                 return
+            if self.verificar_empate(contador):
+                print('Empate!')
+                return 
+            if self.jogador_atual == 2:
+                self.jogador_atual = 1
+            else:
+                self.jogador_atual = 2
+            contador += 1    
             
-    def verificar_empate(self):
-        ...
+    def verificar_empate(self, quantidade_jogadas):
+        if quantidade_jogadas == 41:
+            return True 
 
     def verificar_vitoria(self):
-        ...
+        tabuleiro = self.tabuleiro.tabuleiro
+        for linha in range(6):
+            for coluna in range(4):
+                if (tabuleiro[linha][coluna] == self.jogador_atual and 
+                    tabuleiro[linha][coluna+1] == self.jogador_atual and 
+                    tabuleiro[linha][coluna+2] == self.jogador_atual and 
+                    tabuleiro[linha][coluna+3] == self.jogador_atual):
+                        return True
+
+        for linha in range(3):
+            for coluna in range(7):
+                if (tabuleiro[linha][coluna] == self.jogador_atual and 
+                    tabuleiro[linha+1][coluna] == self.jogador_atual and 
+                    tabuleiro[linha+2][coluna] == self.jogador_atual and 
+                    tabuleiro[linha+3][coluna] == self.jogador_atual):
+                        return True
+                    
+        for linha in range(3):
+            for coluna in range(4):
+                if (tabuleiro[linha][coluna] == self.jogador_atual and 
+                    tabuleiro[linha+1][coluna+1] == self.jogador_atual and 
+                    tabuleiro[linha+2][coluna+2] == self.jogador_atual and 
+                    tabuleiro[linha+3][coluna+3] == self.jogador_atual):
+                        return True
+                    
+        for linha in range(3,6):
+            for coluna in range(4):
+                if (tabuleiro[linha][coluna] == self.jogador_atual and 
+                    tabuleiro[linha-1][coluna+1] == self.jogador_atual and 
+                    tabuleiro[linha-2][coluna+2] == self.jogador_atual and 
+                    tabuleiro[linha-3][coluna+3] == self.jogador_atual):
+                        return True
 
 if __name__ == "__main__":
-    Ligue4.iniciar_jogo()
+    Ligue4().jogo()
