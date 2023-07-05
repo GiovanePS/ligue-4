@@ -1,3 +1,5 @@
+from random import randint
+
 class Tabuleiro:
     def __init__(self):
         self.__tabuleiro = []
@@ -26,8 +28,13 @@ class Tabuleiro:
                 
             print("Coluna cheia. Jogue em outro coluna!")
 
-    def verificar_vitoria():
-        ...
+    def jogada_computador(self):
+        coluna = randint(0, 6)
+        while True:
+            for linha in range(len(self.__tabuleiro)-1, -1, -1):
+                    if self.__tabuleiro[linha][coluna] == 0:
+                        self.__tabuleiro[linha][coluna] = 2
+                        return
 
 class Ligue4:
     def __init__(self):
@@ -37,15 +44,23 @@ class Ligue4:
     def jogo(self):
         contador = 0
         
+        print("[1] 1 Jogador.")
+        print("[2] 2 Jogadores.")
+        modo_de_jogo = int(input("Escolha: "))
         while True:
             self.tabuleiro.mostrar_tabuleiro()
-            self.tabuleiro.adicionar_peca(self.jogador_atual)
+            if modo_de_jogo == 1 and self.jogador_atual == 2:
+                 self.tabuleiro.jogada_computador()
+            else:
+                self.tabuleiro.adicionar_peca(self.jogador_atual)
             if self.verificar_vitoria():
+                self.tabuleiro.mostrar_tabuleiro()
                 print(f'jogador {self.jogador_atual} venceu!')
                 return
             if self.verificar_empate(contador):
+                self.tabuleiro.mostrar_tabuleiro()
                 print('Empate!')
-                return 
+                return
             if self.jogador_atual == 2:
                 self.jogador_atual = 1
             else:
